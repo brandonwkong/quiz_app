@@ -1,0 +1,18 @@
+{
+  "name": "Interview Quiz",
+  "short_name": "Quiz",
+  "description": "Practice interview pattern recognition for LeetCode, ML, and System Design",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='20'/><text y='.9em' x='50%' text-anchor='middle' font-size='70'>🎯</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

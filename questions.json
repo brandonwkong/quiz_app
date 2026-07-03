@@ -1,0 +1,482 @@
+[
+  {
+    "category": "leetcode",
+    "tags": ["hash-map", "two-pointer"],
+    "question": "Given an array and a target, find two numbers that sum to the target. What data structure helps you check complements quickly?",
+    "choices": ["Stack", "Hash Map", "Heap", "Trie"],
+    "answer": "Hash Map",
+    "explanation": "Store seen numbers so each complement lookup is O(1) average. This is the classic Two Sum pattern."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["stack"],
+    "question": "You need to check if a string of parentheses '()[]{}' is valid. What data structure is ideal?",
+    "choices": ["Queue", "Stack", "Hash Map", "Linked List"],
+    "answer": "Stack",
+    "explanation": "Use a stack to match opening brackets with their corresponding closing brackets in LIFO order."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["sorting", "intervals"],
+    "question": "Given a list of intervals, you need to merge overlapping ones. What's the key first step?",
+    "choices": ["Use a heap", "Sort by start time", "Use recursion", "Build a graph"],
+    "answer": "Sort by start time",
+    "explanation": "Sorting intervals by start time allows you to process them linearly and merge consecutive overlapping intervals."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["sliding-window", "hash-set"],
+    "question": "Find the longest substring without repeating characters. What technique combines a moving window with tracking seen characters?",
+    "choices": ["Two Pointers with Hash Set", "Binary Search", "Dynamic Programming", "Divide and Conquer"],
+    "answer": "Two Pointers with Hash Set",
+    "explanation": "Sliding window with a hash set tracks unique characters. Shrink the window from the left when duplicates appear."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dfs", "bfs", "graph"],
+    "question": "Count the number of islands in a 2D grid. What algorithm explores connected land cells?",
+    "choices": ["Dynamic Programming", "Binary Search", "DFS or BFS", "Greedy"],
+    "answer": "DFS or BFS",
+    "explanation": "Use DFS or BFS to explore and mark all connected land cells. Each new unvisited land cell starts a new island."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["topological-sort", "graph"],
+    "question": "Determine if you can finish all courses given prerequisite pairs. What algorithm detects cycles in a directed graph?",
+    "choices": ["Dijkstra's Algorithm", "Topological Sort", "Union Find", "Prim's Algorithm"],
+    "answer": "Topological Sort",
+    "explanation": "Topological sort on a DAG ensures valid ordering. If a cycle exists, topological sort fails and courses can't be completed."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dfs", "hash-map", "graph"],
+    "question": "Clone a graph where each node has neighbors. What do you need to track already-cloned nodes?",
+    "choices": ["Stack", "Queue", "Hash Map", "Array"],
+    "answer": "Hash Map",
+    "explanation": "Use a hash map from original node to cloned node to avoid infinite loops and ensure each node is cloned exactly once."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["heap", "hash-map"],
+    "question": "Find the K most frequent elements in an array. What combination of data structures works efficiently?",
+    "choices": ["Two Stacks", "Hash Map + Heap", "Linked List + Queue", "Array + Binary Search"],
+    "answer": "Hash Map + Heap",
+    "explanation": "Count frequencies with a hash map, then use a min-heap of size K or bucket sort for O(n) solution."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["prefix-sum"],
+    "question": "Compute product of array except self without division. What technique uses left and right passes?",
+    "choices": ["Sliding Window", "Prefix and Suffix Products", "Two Pointers", "Recursion"],
+    "answer": "Prefix and Suffix Products",
+    "explanation": "Build prefix products from left, suffix products from right. Result at each index is prefix[i-1] * suffix[i+1]."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dynamic-programming"],
+    "question": "Find the maximum sum of a contiguous subarray. What classic algorithm solves this in O(n)?",
+    "choices": ["Merge Sort", "Kadane's Algorithm", "Floyd-Warshall", "Bellman-Ford"],
+    "answer": "Kadane's Algorithm",
+    "explanation": "Track current max ending here and global max. Reset current sum when it goes negative."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["prefix-sum", "hash-map"],
+    "question": "Count subarrays that sum to K. What technique tracks cumulative sums efficiently?",
+    "choices": ["Sliding Window", "Prefix Sum + Hash Map", "Binary Search", "Two Pointers"],
+    "answer": "Prefix Sum + Hash Map",
+    "explanation": "Store prefix sum frequencies. At each index, check how many times (currentSum - K) appeared before."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["backtracking", "dfs"],
+    "question": "Search for a word in a 2D board of characters. What technique explores paths and undoes choices?",
+    "choices": ["Dynamic Programming", "Greedy", "DFS + Backtracking", "BFS"],
+    "answer": "DFS + Backtracking",
+    "explanation": "Use DFS to explore each direction. Backtrack by unmarking visited cells when the path doesn't lead to a solution."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dfs", "bfs"],
+    "question": "Find cells that can reach both Pacific and Atlantic oceans. What's the key insight for efficient traversal?",
+    "choices": ["Start from center", "Start from ocean borders", "Use dynamic programming", "Sort all cells"],
+    "answer": "Start from ocean borders",
+    "explanation": "Run DFS/BFS from ocean borders inward. A cell reaching both oceans appears in both traversal results."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["tree", "recursion"],
+    "question": "Find the lowest common ancestor of two nodes in a binary tree. What's the core recursive insight?",
+    "choices": ["Level order traversal", "Check if nodes are in left, right, or current subtree", "Binary search", "Topological sort"],
+    "answer": "Check if nodes are in left, right, or current subtree",
+    "explanation": "Recursively search left and right. If both return non-null, current node is LCA. Otherwise, return the non-null side."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["heap", "quickselect"],
+    "question": "Find the Kth largest element in an unsorted array. What approach gives O(n) average time?",
+    "choices": ["Sort then index", "Quickselect", "Binary Search", "Merge Sort"],
+    "answer": "Quickselect",
+    "explanation": "Quickselect partitions like quicksort but only recurses into one side. Average O(n), worst O(n²)."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["heap"],
+    "question": "Find the median from a data stream. What combination of heaps works efficiently?",
+    "choices": ["One max heap", "One min heap", "Two heaps: max for lower half, min for upper half", "Stack and queue"],
+    "answer": "Two heaps: max for lower half, min for upper half",
+    "explanation": "Keep balanced heaps. Max-heap stores smaller half, min-heap stores larger half. Median is from heap tops."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["trie"],
+    "question": "Implement autocomplete with prefix matching. What data structure is designed for this?",
+    "choices": ["Hash Map", "Binary Search Tree", "Trie", "Heap"],
+    "answer": "Trie",
+    "explanation": "Trie stores strings character by character. Prefix searches traverse the tree to find all matching completions."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dynamic-programming"],
+    "question": "Find minimum coins to make a target amount. What algorithmic paradigm builds up solutions?",
+    "choices": ["Greedy", "Dynamic Programming", "Divide and Conquer", "Backtracking"],
+    "answer": "Dynamic Programming",
+    "explanation": "Build up from amount 0. For each amount, try all coins and take minimum. Classic unbounded knapsack variant."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dynamic-programming"],
+    "question": "Maximum money from non-adjacent houses (House Robber). What's the recurrence relation?",
+    "choices": ["Sort houses by value", "dp[i] = max(dp[i-1], dp[i-2] + nums[i])", "Use a heap", "BFS on house graph"],
+    "answer": "dp[i] = max(dp[i-1], dp[i-2] + nums[i])",
+    "explanation": "At each house, either skip it (dp[i-1]) or rob it plus best from two houses back (dp[i-2] + nums[i])."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["dynamic-programming"],
+    "question": "Check if a string can be segmented into dictionary words. What approach avoids exponential time?",
+    "choices": ["Greedy matching", "Dynamic Programming", "Sort dictionary", "Binary search"],
+    "answer": "Dynamic Programming",
+    "explanation": "dp[i] is true if s[0:i] can be segmented. Check all splits where dp[j] is true and s[j:i] is in dictionary."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["union-find", "dfs"],
+    "question": "Check if an undirected graph is a valid tree (n nodes, n-1 edges, connected, no cycles). What helps detect cycles?",
+    "choices": ["Topological Sort", "Union Find or DFS", "Dijkstra", "Binary Search"],
+    "answer": "Union Find or DFS",
+    "explanation": "Union Find detects cycles when connecting already-connected nodes. DFS can verify connectivity and detect back edges."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["sorting", "heap"],
+    "question": "Find minimum meeting rooms needed. What data structure tracks ongoing meetings efficiently?",
+    "choices": ["Stack", "Queue", "Min Heap by end time", "Hash Map"],
+    "answer": "Min Heap by end time",
+    "explanation": "Sort by start time, use min-heap of end times. If new meeting starts after heap top ends, reuse that room."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["binary-search"],
+    "question": "Search in a rotated sorted array. What key modification to binary search is needed?",
+    "choices": ["Linear scan", "Check which half is sorted, then decide direction", "Two binary searches", "Reverse array first"],
+    "answer": "Check which half is sorted, then decide direction",
+    "explanation": "One half is always sorted. Determine which half target could be in based on sorted half's boundaries."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["tree", "serialization"],
+    "question": "Serialize and deserialize a binary tree. What traversal method works well with null markers?",
+    "choices": ["Inorder only", "Preorder or level-order with null markers", "Postorder only", "Morris traversal"],
+    "answer": "Preorder or level-order with null markers",
+    "explanation": "Preorder (root, left, right) with null markers uniquely defines tree structure for reconstruction."
+  },
+  {
+    "category": "leetcode",
+    "tags": ["binary-search", "dynamic-programming"],
+    "question": "Find length of longest increasing subsequence. What optimization reduces O(n²) DP to O(n log n)?",
+    "choices": ["Use a heap", "Binary search on tails array", "Merge sort", "Hash map"],
+    "answer": "Binary search on tails array",
+    "explanation": "Maintain array of smallest tail elements for each LIS length. Binary search to find insertion point."
+  },
+  {
+    "category": "ml",
+    "tags": ["metrics"],
+    "question": "Your spam filter catches 90% of spam (high recall) but marks many legit emails as spam. What metric is suffering?",
+    "choices": ["Recall", "Precision", "Accuracy", "AUC"],
+    "answer": "Precision",
+    "explanation": "Precision = TP/(TP+FP). Many false positives (legit emails marked spam) means low precision despite high recall."
+  },
+  {
+    "category": "ml",
+    "tags": ["metrics"],
+    "question": "You want a single metric that balances precision and recall. What should you use?",
+    "choices": ["Accuracy", "F1 Score", "MSE", "R-squared"],
+    "answer": "F1 Score",
+    "explanation": "F1 = 2 * (precision * recall) / (precision + recall). It's the harmonic mean, penalizing extreme imbalances."
+  },
+  {
+    "category": "ml",
+    "tags": ["loss-functions"],
+    "question": "For binary classification with probability outputs, which loss function is standard?",
+    "choices": ["Mean Squared Error", "Cross Entropy Loss", "Hinge Loss", "Huber Loss"],
+    "answer": "Cross Entropy Loss",
+    "explanation": "Cross entropy measures divergence between predicted probabilities and true labels. Gradients are better behaved than MSE."
+  },
+  {
+    "category": "ml",
+    "tags": ["overfitting"],
+    "question": "Your model achieves 99% training accuracy but 60% test accuracy. What is this called?",
+    "choices": ["Underfitting", "Overfitting", "Data leakage", "Concept drift"],
+    "answer": "Overfitting",
+    "explanation": "The model memorized training data but doesn't generalize. Solutions: more data, regularization, simpler model."
+  },
+  {
+    "category": "ml",
+    "tags": ["regularization"],
+    "question": "L2 regularization adds what term to the loss function?",
+    "choices": ["Sum of absolute weights", "Sum of squared weights", "Number of non-zero weights", "Gradient magnitude"],
+    "answer": "Sum of squared weights",
+    "explanation": "L2 adds λ * Σ(w²) to loss, penalizing large weights. This encourages smaller, more distributed weights."
+  },
+  {
+    "category": "ml",
+    "tags": ["data-splits"],
+    "question": "You tune hyperparameters on the test set until accuracy improves. What mistake are you making?",
+    "choices": ["Data augmentation", "Feature leakage", "Overfitting to the test set", "Underfitting"],
+    "answer": "Overfitting to the test set",
+    "explanation": "Use a separate validation set for hyperparameter tuning. Test set should only be used for final evaluation."
+  },
+  {
+    "category": "ml",
+    "tags": ["optimization"],
+    "question": "During training, loss oscillates wildly and sometimes explodes. What's the likely cause?",
+    "choices": ["Learning rate too low", "Learning rate too high", "Batch size too large", "Not enough layers"],
+    "answer": "Learning rate too high",
+    "explanation": "High learning rate causes overshooting of minima. Reduce learning rate or use adaptive optimizers like Adam."
+  },
+  {
+    "category": "ml",
+    "tags": ["optimization"],
+    "question": "What's a tradeoff of using very large batch sizes?",
+    "choices": ["Slower per-step computation", "More memory efficient", "May converge to sharper minima with worse generalization", "Always better gradients"],
+    "answer": "May converge to sharper minima with worse generalization",
+    "explanation": "Large batches reduce gradient noise, potentially finding sharp minima. Small batches add noise that can help escape."
+  },
+  {
+    "category": "ml",
+    "tags": ["embeddings"],
+    "question": "What do word embeddings like Word2Vec capture that one-hot encoding doesn't?",
+    "choices": ["Word length", "Semantic similarity between words", "Character counts", "Document frequency"],
+    "answer": "Semantic similarity between words",
+    "explanation": "Embeddings place similar words close in vector space. One-hot vectors are orthogonal with no similarity notion."
+  },
+  {
+    "category": "ml",
+    "tags": ["rag", "fine-tuning"],
+    "question": "You need an LLM to answer questions about your company's private docs. RAG or fine-tuning?",
+    "choices": ["Fine-tuning is always better", "RAG retrieves relevant docs at query time", "Neither can help", "Use smaller batch size"],
+    "answer": "RAG retrieves relevant docs at query time",
+    "explanation": "RAG retrieves and injects relevant context without retraining. Better for frequently updated knowledge bases."
+  },
+  {
+    "category": "ml",
+    "tags": ["classification"],
+    "question": "Predicting house prices vs predicting if email is spam. Which is regression vs classification?",
+    "choices": ["Both are regression", "Both are classification", "Prices: regression, Spam: classification", "Prices: classification, Spam: regression"],
+    "answer": "Prices: regression, Spam: classification",
+    "explanation": "Regression predicts continuous values (prices). Classification predicts discrete categories (spam/not spam)."
+  },
+  {
+    "category": "ml",
+    "tags": ["metrics"],
+    "question": "In a confusion matrix, which cell shows false negatives?",
+    "choices": ["Predicted positive, actually positive", "Predicted negative, actually positive", "Predicted positive, actually negative", "Predicted negative, actually negative"],
+    "answer": "Predicted negative, actually positive",
+    "explanation": "False negative: model predicted negative but truth was positive. It's the 'miss' that hurts recall."
+  },
+  {
+    "category": "ml",
+    "tags": ["calibration"],
+    "question": "Your model outputs 80% confidence for predictions that are correct only 50% of the time. What problem is this?",
+    "choices": ["Overfitting", "Poor calibration", "Underfitting", "Data leakage"],
+    "answer": "Poor calibration",
+    "explanation": "A calibrated model's confidence should match actual accuracy. 80% confidence should mean ~80% correct."
+  },
+  {
+    "category": "ml",
+    "tags": ["data-leakage"],
+    "question": "You accidentally include the target variable in features during training. What is this called?",
+    "choices": ["Regularization", "Feature engineering", "Feature leakage", "Normalization"],
+    "answer": "Feature leakage",
+    "explanation": "Leaking future or target information into training artificially inflates metrics but fails in production."
+  },
+  {
+    "category": "ml",
+    "tags": ["regularization"],
+    "question": "Which regularization technique randomly zeros out neurons during training?",
+    "choices": ["L1 regularization", "L2 regularization", "Dropout", "Batch normalization"],
+    "answer": "Dropout",
+    "explanation": "Dropout randomly sets neuron activations to zero during training, preventing co-adaptation and reducing overfitting."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["performance"],
+    "question": "Your ML service handles 1000 requests/sec but each takes 500ms. What's the relationship between latency and throughput here?",
+    "choices": ["They're the same thing", "Low latency guarantees high throughput", "High throughput can coexist with high latency via parallelism", "Throughput doesn't matter"],
+    "answer": "High throughput can coexist with high latency via parallelism",
+    "explanation": "Throughput is requests per second. Latency is time per request. Parallelism enables high throughput despite per-request latency."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["batching"],
+    "question": "Why does batching inference requests improve GPU utilization?",
+    "choices": ["Reduces memory usage", "GPUs are optimized for parallel matrix operations", "Simplifies code", "Reduces network calls"],
+    "answer": "GPUs are optimized for parallel matrix operations",
+    "explanation": "GPUs excel at SIMD operations. Processing a batch together better utilizes parallel cores than sequential single requests."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["queues"],
+    "question": "Inference requests spike beyond your model server capacity. What pattern handles this gracefully?",
+    "choices": ["Ignore extra requests", "Request queue with backpressure", "Restart the server", "Double the model size"],
+    "answer": "Request queue with backpressure",
+    "explanation": "A queue buffers requests. Backpressure signals upstream to slow down when queue is full, preventing overload."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["caching"],
+    "question": "You compute embeddings for the same documents repeatedly. What optimization helps?",
+    "choices": ["Use a bigger model", "Cache embeddings", "Reduce batch size", "Add more layers"],
+    "answer": "Cache embeddings",
+    "explanation": "Pre-compute and cache embeddings for static content. Only compute on cache miss or content change."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["vector-db"],
+    "question": "You need to find semantically similar documents among millions. What specialized database helps?",
+    "choices": ["Relational database with LIKE queries", "Vector database with ANN search", "Key-value store", "Graph database"],
+    "answer": "Vector database with ANN search",
+    "explanation": "Vector DBs use approximate nearest neighbor (ANN) algorithms like HNSW for fast similarity search on embeddings."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["monitoring"],
+    "question": "Your production model's accuracy degrades over months. What phenomenon is this?",
+    "choices": ["Overfitting", "Model drift", "Data leakage", "Gradient explosion"],
+    "answer": "Model drift",
+    "explanation": "Data/concept drift: real-world data distribution shifts from training data. Requires monitoring and retraining."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["reliability"],
+    "question": "Your LLM sometimes generates inappropriate content. What's a safeguard that doesn't require retraining?",
+    "choices": ["More training data", "Deterministic guardrails and content filters", "Larger model", "Lower temperature"],
+    "answer": "Deterministic guardrails and content filters",
+    "explanation": "Post-processing filters, blocklists, and rule-based guardrails catch problematic outputs without model changes."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["architecture"],
+    "question": "Long inference requests block your API. What architectural pattern keeps your API responsive?",
+    "choices": ["Synchronous processing", "Async inference with callbacks or polling", "Larger batch size", "More model layers"],
+    "answer": "Async inference with callbacks or polling",
+    "explanation": "Accept request, return job ID immediately, process async. Client polls or receives callback when done."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["gpu"],
+    "question": "Your GPU is only 30% utilized during inference. What might help?",
+    "choices": ["Use a smaller GPU", "Increase batch size", "Reduce model size", "Use CPU instead"],
+    "answer": "Increase batch size",
+    "explanation": "Larger batches fill more GPU cores. Balance batch size against latency requirements for optimal utilization."
+  },
+  {
+    "category": "ml-systems",
+    "tags": ["reliability"],
+    "question": "Your model service is down. What should your application do?",
+    "choices": ["Crash immediately", "Return cached or fallback responses", "Wait indefinitely", "Retry forever"],
+    "answer": "Return cached or fallback responses",
+    "explanation": "Graceful degradation: serve cached results, simpler model fallback, or default responses during outages."
+  },
+  {
+    "category": "system-design",
+    "tags": ["load-balancing"],
+    "question": "You have 10 identical servers. How do you distribute incoming traffic evenly?",
+    "choices": ["Send all traffic to server 1", "Load balancer", "Let clients choose randomly", "Use one really big server"],
+    "answer": "Load balancer",
+    "explanation": "Load balancer distributes requests across servers using algorithms like round-robin, least connections, or weighted."
+  },
+  {
+    "category": "system-design",
+    "tags": ["caching"],
+    "question": "Database queries for user profiles are slow. What's the standard caching solution?",
+    "choices": ["Add more database replicas only", "Use Redis as a cache layer", "Remove the database", "Query less often"],
+    "answer": "Use Redis as a cache layer",
+    "explanation": "Redis provides sub-millisecond in-memory lookups. Cache frequent queries, invalidate on updates."
+  },
+  {
+    "category": "system-design",
+    "tags": ["database"],
+    "question": "You need flexible schemas and horizontal scaling for billions of records. SQL or NoSQL?",
+    "choices": ["SQL always", "NoSQL like MongoDB or Cassandra", "Neither", "Spreadsheets"],
+    "answer": "NoSQL like MongoDB or Cassandra",
+    "explanation": "NoSQL databases offer flexible schemas, horizontal scaling, and are designed for distributed data at scale."
+  },
+  {
+    "category": "system-design",
+    "tags": ["messaging"],
+    "question": "You need to decouple services so a slow consumer doesn't block the producer. What helps?",
+    "choices": ["Direct HTTP calls", "Message queue like Kafka or RabbitMQ", "Shared database", "Polling"],
+    "answer": "Message queue like Kafka or RabbitMQ",
+    "explanation": "Message queues buffer messages between services. Producers and consumers work at their own pace."
+  },
+  {
+    "category": "system-design",
+    "tags": ["stateless"],
+    "question": "Your servers store user session data locally. Why is this problematic for scaling?",
+    "choices": ["It uses too much memory", "Requests must be routed to the same server", "It's too fast", "Sessions are insecure"],
+    "answer": "Requests must be routed to the same server",
+    "explanation": "Sticky sessions complicate scaling. Store sessions in shared storage (Redis) so any server can handle any request."
+  },
+  {
+    "category": "system-design",
+    "tags": ["scaling"],
+    "question": "You need to handle 10x traffic. Add more servers or get a bigger server?",
+    "choices": ["Vertical scaling (bigger server)", "Horizontal scaling (more servers)", "Ignore the problem", "Reduce features"],
+    "answer": "Horizontal scaling (more servers)",
+    "explanation": "Horizontal scaling adds capacity linearly and provides redundancy. Vertical scaling has hardware limits."
+  },
+  {
+    "category": "system-design",
+    "tags": ["rate-limiting"],
+    "question": "An API client sends 10,000 requests per second, overloading your service. What protection do you need?",
+    "choices": ["Bigger database", "Rate limiting", "More features", "Remove authentication"],
+    "answer": "Rate limiting",
+    "explanation": "Rate limiting caps requests per client/time period. Protects services from abuse and ensures fair usage."
+  },
+  {
+    "category": "system-design",
+    "tags": ["database"],
+    "question": "Your database queries by user_id are slow. What's the first optimization to try?",
+    "choices": ["Add more RAM", "Add an index on user_id", "Use NoSQL", "Remove the column"],
+    "answer": "Add an index on user_id",
+    "explanation": "Indexes create efficient lookup structures. B-tree indexes turn O(n) scans into O(log n) lookups."
+  },
+  {
+    "category": "system-design",
+    "tags": ["cdn"],
+    "question": "Users worldwide experience slow load times for your static assets. What helps?",
+    "choices": ["Bigger origin server", "CDN (Content Delivery Network)", "Compress images more", "Use a single data center"],
+    "answer": "CDN (Content Delivery Network)",
+    "explanation": "CDNs cache content at edge locations worldwide. Users fetch from nearby servers, reducing latency."
+  },
+  {
+    "category": "system-design",
+    "tags": ["cap-theorem"],
+    "question": "CAP theorem: during a network partition, what's the tradeoff?",
+    "choices": ["Cost vs Performance", "Consistency vs Availability", "Cache vs Database", "CPU vs Memory"],
+    "answer": "Consistency vs Availability",
+    "explanation": "During partitions, you must choose: reject requests (consistent but unavailable) or serve stale data (available but inconsistent)."
+  }
+]

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Interview Quiz</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='20'/><text y='.9em' x='50%' text-anchor='middle' font-size='70'>🎯</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Error Screen -->
+        <div id="error-screen" class="screen hidden">
+            <div class="card">
+                <h2>Failed to Load Questions</h2>
+                <p id="error-message">Could not load questions.json</p>
+                <button id="retry-btn" class="btn btn-primary">Retry</button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="screen">
+            <div class="card">
+                <p>Loading questions...</p>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen hidden">
+            <!-- Header Stats -->
+            <header id="stats-bar">
+                <div class="stat">
+                    <span class="stat-label">Left</span>
+                    <span id="remaining" class="stat-value">0</span>
+                </div>
+                <div class="stat correct">
+                    <span class="stat-label">Correct</span>
+                    <span id="correct-count" class="stat-value">0</span>
+                </div>
+                <div class="stat incorrect">
+                    <span class="stat-label">Wrong</span>
+                    <span id="incorrect-count" class="stat-value">0</span>
+                </div>
+            </header>
+
+            <!-- Category Filters -->
+            <nav id="category-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="leetcode">LeetCode</button>
+                <button class="filter-btn" data-category="ml">ML</button>
+                <button class="filter-btn" data-category="ml-systems">ML Systems</button>
+                <button class="filter-btn" data-category="system-design">System Design</button>
+            </nav>
+
+            <!-- Question Card -->
+            <main id="question-card" class="card">
+                <div id="category-tag" class="category-tag">Category</div>
+                <p id="question-text" class="question-text">Question goes here</p>
+
+                <div id="choices-container" class="choices"></div>
+
+                <div id="feedback" class="feedback hidden">
+                    <p id="feedback-text"></p>
+                    <div id="explanation" class="explanation"></div>
+                    <button id="next-btn" class="btn btn-primary">Next</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="screen hidden">
+            <div class="card completion-card">
+                <h2>Quiz Complete!</h2>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <span class="final-stat-value" id="final-correct">0</span>
+                        <span class="final-stat-label">Correct</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-stat-value" id="final-incorrect">0</span>
+                        <span class="final-stat-label">Wrong</span>
+                    </div>
+                </div>
+                <button id="restart-btn" class="btn btn-primary">Start Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
