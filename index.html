@@ -45,7 +45,21 @@
                     <span class="stat-label">Wrong</span>
                     <span id="incorrect-count" class="stat-value">0</span>
                 </div>
+                <button id="api-key-btn" class="api-key-btn" title="Set OpenAI API Key">🔑 API Key</button>
             </header>
+
+            <!-- API Key Modal -->
+            <div id="api-key-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>Set OpenAI API Key</h3>
+                    <p>Required for AI-evaluated open-ended questions</p>
+                    <input type="password" id="api-key-input" placeholder="sk-..." />
+                    <div class="modal-buttons">
+                        <button id="save-api-key" class="btn btn-primary">Save</button>
+                        <button id="cancel-api-key" class="btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Category Filters -->
             <nav id="category-filters">
@@ -54,6 +68,11 @@
                 <button class="filter-btn" data-category="ml">ML</button>
                 <button class="filter-btn" data-category="ml-systems">ML Systems</button>
                 <button class="filter-btn" data-category="system-design">System Design</button>
+                <button class="filter-btn" data-category="tesla-resume">Tesla Resume</button>
+                <button class="filter-btn" data-category="tesla-behavioral">Tesla Behavioral</button>
+                <button class="filter-btn" data-category="tesla-product">Tesla Product</button>
+                <button class="filter-btn" data-category="tesla-crossfunctional">Tesla CrossFunc</button>
+                <button class="filter-btn" data-category="tesla-motivation">Tesla Motivation</button>
             </nav>
 
             <!-- Question Card -->
@@ -61,12 +80,29 @@
                 <div id="category-tag" class="category-tag">Category</div>
                 <p id="question-text" class="question-text">Question goes here</p>
 
+                <!-- Multiple Choice Container -->
                 <div id="choices-container" class="choices"></div>
+
+                <!-- Open-ended Question Container -->
+                <div id="open-container" class="open-container hidden">
+                    <textarea id="user-response" placeholder="Type your answer here... Be specific, use metrics, and show ownership." rows="6"></textarea>
+                    <button id="submit-response" class="btn btn-primary">Submit for AI Evaluation</button>
+                    <div id="evaluating-indicator" class="evaluating hidden">
+                        <span class="spinner"></span> Evaluating your response...
+                    </div>
+                </div>
 
                 <div id="feedback" class="feedback hidden">
                     <p id="feedback-text"></p>
                     <div id="explanation" class="explanation"></div>
                     <button id="next-btn" class="btn btn-primary">Next</button>
+                </div>
+
+                <!-- AI Feedback Container -->
+                <div id="ai-feedback" class="ai-feedback hidden">
+                    <h4>Tesla Interviewer Feedback</h4>
+                    <div id="ai-feedback-content"></div>
+                    <button id="next-btn-ai" class="btn btn-primary">Next Question</button>
                 </div>
             </main>
         </div>

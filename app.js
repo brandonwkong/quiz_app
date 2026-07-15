@@ -6,8 +6,79 @@ const state = {
     correctCount: 0,
     incorrectCount: 0,
     answered: false,
-    currentCategory: 'all'
+    currentCategory: 'all',
+    openaiKey: localStorage.getItem('openai_api_key') || '',
+    isEvaluating: false
 };
+
+// Tesla Interviewer System Prompt
+const INTERVIEWER_PROMPT = `You are a Senior Staff Project Manager at Tesla conducting the FINAL interview for the Service Systems Integration Engineer Internship. The candidate has already passed 2 technical rounds with a Staff Software Engineer and Staff Service Systems Integration Engineer.
+
+Your job is to evaluate their response like a real Tesla interviewer would. Be direct and constructive.
+
+Scoring (provide all):
+- Technical Communication (1-10): Can they explain technical concepts clearly?
+- Ownership (1-10): Do they take responsibility and show initiative?
+- Business Thinking (1-10): Do they connect technical work to business outcomes?
+- Customer Focus (1-10): Do they consider end-user (technician/advisor) impact?
+- Clarity (1-10): Is the answer structured and easy to follow?
+- Confidence (1-10): Do they sound certain without being arrogant?
+
+Overall Hire Signal: Strong Hire / Hire / Lean Hire / Lean No Hire / No Hire
+
+Format your response as:
+## Scores
+[scores listed]
+
+## What Was Strong
+[1-2 bullet points]
+
+## What Was Weak
+[1-2 bullet points]
+
+## Follow-up Questions I'd Ask
+[2-3 probing questions a Tesla interviewer would ask next]
+
+## How to Improve This Answer
+[Specific, actionable advice]
+
+Be tough but fair. Challenge vague answers. Push for specifics, metrics, and ownership.`;
+
+// OpenAI API call function
+async function evaluateWithAI(question, userAnswer) {
+    if (!state.openaiKey) {
+        return { error: 'No API key set. Click "Set API Key" to add your OpenAI key.' };
+    }
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${state.openaiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: INTERVIEWER_PROMPT },
+                    { role: 'user', content: `Interview Question: ${question}\n\nCandidate's Response:\n${userAnswer}` }
+                ],
+                temperature: 0.7,
+                max_tokens: 1000
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            return { error: error.error?.message || 'API request failed' };
+        }
+
+        const data = await response.json();
+        return { feedback: data.choices[0].message.content };
+    } catch (err) {
+        return { error: `Network error: ${err.message}` };
+    }
+}
 
 // DOM Elements
 const elements = {
@@ -120,7 +191,12 @@ function getCategoryLabel(category) {
         'leetcode': 'LeetCode',
         'ml': 'ML Fundamentals',
         'ml-systems': 'ML Systems',
-        'system-design': 'System Design'
+        'system-design': 'System Design',
+        'tesla-resume': 'Tesla Resume Grill',
+        'tesla-behavioral': 'Tesla Behavioral',
+        'tesla-product': 'Tesla Product/Ops',
+        'tesla-crossfunctional': 'Tesla Cross-Functional',
+        'tesla-motivation': 'Tesla Motivation'
     };
     return labels[category] || category;
 }

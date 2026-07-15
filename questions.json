@@ -478,5 +478,402 @@
     "choices": ["Cost vs Performance", "Consistency vs Availability", "Cache vs Database", "CPU vs Memory"],
     "answer": "Consistency vs Availability",
     "explanation": "During partitions, you must choose: reject requests (consistent but unavailable) or serve stale data (available but inconsistent)."
+  },
+
+  {
+    "category": "tesla-resume",
+    "tags": ["rbc", "evaluation", "metrics"],
+    "question": "[RBC] Your GenAI evaluation system achieved 94% agreement with human reviewers. How would you explain what '94% agreement' actually measures to a non-technical stakeholder?",
+    "choices": ["The AI is correct 94% of the time", "94% of AI decisions match human decisions on the same cases", "Human reviewers agree with each other 94% of the time", "The model has 94% accuracy on test data"],
+    "answer": "94% of AI decisions match human decisions on the same cases",
+    "explanation": "Agreement rate measures alignment between AI and human judgments on identical cases. Strong answer: 'We compared AI evaluations against human reviewers on 500+ compliance assessments. 94% means when both look at the same case, they reach the same conclusion. This builds trust because we're not asking users to blindly trust AI - we're showing it thinks like our best reviewers.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rbc", "feedback", "iteration"],
+    "question": "[RBC] You reduced false positive flags by 38% through user feedback. What was the most critical component of your feedback capture system?",
+    "choices": ["A/B testing infrastructure", "Structured correction tags linked to specific prompt patterns", "More training data", "Faster model inference"],
+    "answer": "Structured correction tags linked to specific prompt patterns",
+    "explanation": "Strong answer: 'We built structured feedback capture - when users corrected a decision, they tagged WHY (e.g., 'context missing', 'policy changed', 'edge case'). This let us trace failures back to specific prompt sections and fix root causes, not just symptoms. The 38% reduction came from addressing the top 3 failure patterns systematically.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rbc", "tradeoffs"],
+    "question": "[RBC] In your compliance evaluation system, what's the key tradeoff between precision and recall, and which direction did you optimize for?",
+    "choices": ["High precision (fewer false positives) - missing some issues is better than alert fatigue", "High recall (catch everything) - compliance must not miss violations", "Balance both equally with F1 score", "Depends on the specific compliance domain and risk tolerance"],
+    "answer": "Depends on the specific compliance domain and risk tolerance",
+    "explanation": "Strong answer: 'For high-stakes compliance like AML, we optimized for recall - missing a violation has severe regulatory consequences. For routine policy checks, we prioritized precision to avoid alert fatigue. I worked with compliance SMEs to set different thresholds per domain. The 38% false positive reduction was specifically in lower-risk categories where precision mattered more.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rogers", "impact", "metrics"],
+    "question": "[Rogers] Your bundle recommendation agent projected $50M+ annual savings. Walk me through how you calculated that business impact.",
+    "choices": ["Estimated by engineering team", "30% conversion lift x average revenue per conversion x annual volume", "Compared to competitor benchmarks", "Executive estimate"],
+    "answer": "30% conversion lift x average revenue per conversion x annual volume",
+    "explanation": "Strong answer: 'We measured conversion rate before (X%) and after (X+30% relative increase). Each converted user represented ~$Y average bundle value. With Z annual interactions, the math: additional conversions × average value × retention rate = projected savings. I validated assumptions with the business team and used conservative estimates. The $50M was reviewed by finance.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rogers", "orchestration", "architecture"],
+    "question": "[Rogers] You built an agent orchestration layer with Bedrock + Lex reducing interaction time by 80%. What was the key architectural decision?",
+    "choices": ["Bigger LLM models for better understanding", "Parallel intent routing with deterministic handoffs", "Single monolithic agent for simplicity", "More training data"],
+    "answer": "Parallel intent routing with deterministic handoffs",
+    "explanation": "Strong answer: 'Instead of a single agent handling everything sequentially, we decomposed into specialized sub-agents - billing, technical support, upgrades. Lex handled intent classification upfront, then routed to the right Bedrock-powered specialist. This cut latency because each agent was optimized for its domain, and we could parallelize independent tasks like pulling account info while classifying intent.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rogers", "guardrails", "safety"],
+    "question": "[Rogers] You implemented LLM guardrails for policy compliance. What happens when a user query hits a guardrail?",
+    "choices": ["Block the request and show error", "Graceful redirect with human escalation path", "Silently ignore the query", "Log for later review only"],
+    "answer": "Graceful redirect with human escalation path",
+    "explanation": "Strong answer: 'Hard blocks frustrate users. We implemented tiered responses: soft guardrails rephrased or redirected queries gracefully, hard guardrails (legal, safety) clearly explained why we couldn't help and offered human escalation. We logged everything for pattern analysis. Critical: guardrails had to be deterministic, not LLM-based, for reliability.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["rogers", "nlp", "etl"],
+    "question": "[Rogers] You analyzed 20,000+ employee complaints with NLP. What was the most valuable insight type you extracted?",
+    "choices": ["Sentiment scores", "Topic clusters revealing systemic issues", "Individual complaint summaries", "Keyword frequency counts"],
+    "answer": "Topic clusters revealing systemic issues",
+    "explanation": "Strong answer: 'Sentiment alone doesn't drive action. We clustered complaints into topic groups (e.g., 'scheduling conflicts', 'tool access delays') and tracked trend over time. Leadership could see: 'Tool access complaints up 40% this quarter' - that's actionable. We prioritized clusters by volume × severity × solvability. Individual summaries were secondary for spot-checks.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["adanomad", "latency", "caching"],
+    "question": "[Adanomad] Your multi-step agent workflow engine reduced latency by 50% using LRU caching and parallel execution. Which had bigger impact?",
+    "choices": ["LRU caching dominated the gains", "Parallel execution dominated the gains", "Roughly equal contribution", "Depends on the workflow pattern"],
+    "answer": "Depends on the workflow pattern",
+    "explanation": "Strong answer: 'For workflows with repeated sub-tasks (e.g., fetching same user context), LRU caching was huge - we saw 70%+ cache hit rates. For workflows with independent branches, parallel execution dominated. I instrumented both to measure contribution per workflow type. This let us optimize: cache-heavy workflows got bigger cache, parallel-heavy got more workers.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["adanomad", "scaling", "voice"],
+    "question": "[Adanomad] You scaled a voice agent to 200+ concurrent users. What was the primary bottleneck you had to solve?",
+    "choices": ["CPU compute for speech recognition", "Memory for conversation state", "Network latency for real-time streaming", "Database connection pooling"],
+    "answer": "Network latency for real-time streaming",
+    "explanation": "Strong answer: 'Voice is latency-critical - users notice >300ms delays. The bottleneck was round-trip time between speech capture → transcription → LLM → TTS → playback. We solved with: streaming transcription (process as user speaks), edge deployment to reduce network hops, and response streaming (start TTS before full response). At 200 users, we also hit connection limits which required careful pooling.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["kisoji", "ml", "bio"],
+    "question": "[Kisoji] You fine-tuned models for antibody generation improving screening efficiency by 20%. What made this problem different from typical NLP fine-tuning?",
+    "choices": ["Biological sequences have different tokenization needs", "Smaller dataset size in biotech", "No pretrained models available", "Faster inference requirements"],
+    "answer": "Biological sequences have different tokenization needs",
+    "explanation": "Strong answer: 'Proteins aren't natural language - standard tokenizers don't work. We used specialized protein language models (like ESM) that understand amino acid sequences. The 20% improvement came from domain-specific pretraining plus task-specific fine-tuning. Key challenge: biotech datasets are small but high-quality, so we focused on data augmentation and careful validation to avoid overfitting.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["healthai", "langgraph", "orchestration"],
+    "question": "[HealthAI] You used LangGraph for multi-step workflow orchestration. Why LangGraph over a simple chain or custom state machine?",
+    "choices": ["LangGraph is faster", "Native support for cycles, branching, and state persistence", "Better LLM integration", "More documentation available"],
+    "answer": "Native support for cycles, branching, and state persistence",
+    "explanation": "Strong answer: 'Triage workflows aren't linear - patients might need to go back and clarify symptoms, or branch into multiple parallel assessments. LangGraph's graph-based execution handles cycles (clarification loops) and conditional branching natively. The state persistence was critical: if a step fails, we can resume without re-asking questions. Simple chains can't do this elegantly.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["healthai", "mcp", "safety"],
+    "question": "[HealthAI] You integrated MCP-based tool execution with 'zero unauthorized tool calls through state-gated approval logic.' How did you enforce this?",
+    "choices": ["LLM prompt instructions to not call unauthorized tools", "Deterministic code gates that check state before tool execution", "User confirmation for every tool call", "Rate limiting on tool calls"],
+    "answer": "Deterministic code gates that check state before tool execution",
+    "explanation": "Strong answer: 'Never trust LLM to self-police tool access. Each tool was wrapped with a deterministic gate that checked: (1) current workflow state, (2) required prior approvals, (3) user consent flags. If state didn't authorize the tool, the call was blocked at the code level before reaching the tool. The LLM could try to call anything - the wrapper prevented execution. This is defense in depth.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["healthai", "rag", "metrics"],
+    "question": "[HealthAI] Your RAG implementation improved triage decision grounding by 35% over baseline LLM. How did you measure 'grounding'?",
+    "choices": ["User satisfaction surveys", "Citation accuracy and factual consistency with source documents", "Response latency", "Token count reduction"],
+    "answer": "Citation accuracy and factual consistency with source documents",
+    "explanation": "Strong answer: 'Grounding = answers are supported by retrieved evidence. We measured: (1) Citation accuracy - did the response cite the correct source document? (2) Factual consistency - does the claim match the source? (3) Hallucination rate - claims with no source support. The 35% improvement came from LlamaIndex's hybrid search (semantic + keyword) finding more relevant chunks than pure semantic search.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["watai", "faiss", "data"],
+    "question": "[WAT.ai] You built a data ingestion pipeline processing 470+ HTML documents with FAISS. What was the key preprocessing challenge?",
+    "choices": ["HTML parsing is computationally expensive", "Regulatory documents have inconsistent structure requiring custom parsing", "FAISS has strict input format requirements", "Documents were too large for embedding"],
+    "answer": "Regulatory documents have inconsistent structure requiring custom parsing",
+    "explanation": "Strong answer: 'Regulatory HTML isn't clean - different agencies use different formats, nested tables, inline styling. We built custom parsers per document type, extracted semantic sections (definitions, requirements, exemptions), and chunked intelligently (not just by token count but by logical sections). FAISS indexing was straightforward; the 80% of work was getting clean, well-structured text to embed.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["general", "ownership"],
+    "question": "Looking across your internships, which project did you have the most end-to-end ownership of?",
+    "choices": ["RBC evaluation system", "Rogers recommendation agent", "Adanomad workflow engine", "All had similar ownership levels"],
+    "answer": "All had similar ownership levels",
+    "explanation": "Trick question - there's no 'right' answer. The point is to pick ONE and go deep. Strong answer: 'At Adanomad, I owned the workflow engine end-to-end: requirements gathering from the team, architecture design, implementation, testing, deployment, and post-launch monitoring. I made the call on LRU vs LFU caching, defended the parallel execution approach to senior engineers, and was on-call for production issues. The 50% latency reduction was my metric to hit.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["general", "failure"],
+    "question": "What's a technical decision from your resume projects that you would do differently now?",
+    "choices": ["Model selection", "Architecture choice", "Testing approach", "Any honest reflection on a real mistake"],
+    "answer": "Any honest reflection on a real mistake",
+    "explanation": "Interviewers want to see self-awareness. Strong answer: 'At Rogers, I initially built the guardrails as LLM-based classifiers. They were too slow and inconsistent. I should have started with rule-based filters from day one and only used LLM classification for edge cases. It cost us 2 weeks to refactor. Lesson: deterministic systems first, ML for what truly needs it.'"
+  },
+  {
+    "category": "tesla-resume",
+    "tags": ["general", "metrics"],
+    "question": "Across all your projects, how do you typically validate that your metrics (94% agreement, 38% reduction, etc.) are trustworthy?",
+    "choices": ["Run on large test sets", "Cross-validation with held-out data", "Statistical significance tests and confidence intervals", "All of the above with stakeholder review"],
+    "answer": "All of the above with stakeholder review",
+    "explanation": "Strong answer: 'Numbers lie without context. I always: (1) use held-out test data, (2) compute confidence intervals (94% agreement could be 92-96%), (3) check for data leakage or selection bias, (4) review with domain experts who can spot if results seem unrealistic. At RBC, the compliance team sanity-checked our 94% by manually reviewing a sample. Trust but verify.'"
+  },
+
+  {
+    "category": "tesla-behavioral",
+    "tags": ["conflict", "disagreement"],
+    "question": "Your manager wants to ship a feature you believe isn't ready. What's the best approach?",
+    "choices": ["Defer to manager's judgment since they have more context", "Push back with specific risks, data, and a proposed timeline", "Escalate to skip-level manager", "Document concerns in email and proceed"],
+    "answer": "Push back with specific risks, data, and a proposed timeline",
+    "explanation": "Strong answer: 'I disagree and commit - but only after making my case clearly. I'd say: \"Here are the 3 specific risks - edge case X fails 15% of the time, we have no rollback plan, and users haven't tested it. I propose 1 more week for these fixes. If you still want to ship, I'll make it happen and own the outcome.\" Data + alternative + commitment to the final decision.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["failure", "learning"],
+    "question": "Tell me about a time you were wrong about something important. What's the best way to frame this?",
+    "choices": ["Focus on external factors that caused the mistake", "Own the mistake, explain the impact, and show what you learned", "Minimize the mistake to avoid looking bad", "Blame unclear requirements"],
+    "answer": "Own the mistake, explain the impact, and show what you learned",
+    "explanation": "Strong answer: 'At Adanomad, I underestimated the voice latency requirements. I assumed 500ms was acceptable - users hated it. I should have done user testing earlier instead of relying on benchmarks. The fix took 2 extra weeks. Now I always validate UX assumptions with real users before committing to technical specs. The lesson cost us time, but I haven't repeated it.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["prioritization", "ambiguity"],
+    "question": "You have 3 high-priority requests from different stakeholders, all due this week. How do you prioritize?",
+    "choices": ["First come, first served", "Whoever is most senior", "Assess impact and urgency, then negotiate transparently", "Work overtime to do all three"],
+    "answer": "Assess impact and urgency, then negotiate transparently",
+    "explanation": "Strong answer: 'I'd map each request on impact (how many users affected, revenue impact) vs urgency (hard deadline vs preference). Then I'd talk to all three stakeholders: \"Here's what I can deliver - request A by Tuesday, B by Thursday. For C, I need to push to next week or cut scope. Which matters most?\" Transparency avoids surprises and lets them negotiate with each other.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["feedback", "growth"],
+    "question": "How do you typically respond to critical feedback?",
+    "choices": ["Defend my decisions to show I thought them through", "Listen, ask clarifying questions, and reflect before responding", "Accept all feedback immediately", "Ignore feedback that seems unfair"],
+    "answer": "Listen, ask clarifying questions, and reflect before responding",
+    "explanation": "Strong answer: 'My instinct is to defend, but I've learned to pause. I ask: \"Can you give me a specific example?\" to understand the real issue. Then I take time to reflect - is there truth here? At Rogers, my manager said my documentation was unclear. Initially I disagreed, but after rereading with fresh eyes, she was right. I now write docs, wait a day, then revise.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["leadership", "influence"],
+    "question": "How do you convince a team to adopt a new approach when you have no formal authority?",
+    "choices": ["Escalate to management for a mandate", "Build a working prototype that demonstrates the value", "Send detailed documentation explaining benefits", "Wait until you have formal authority"],
+    "answer": "Build a working prototype that demonstrates the value",
+    "explanation": "Strong answer: 'Show, don't tell. When I wanted to introduce LangGraph at WAT.ai, I built a small working demo showing the exact workflow improvement. People could see it, touch it, and ask questions. Documentation convinces intellectually; demos convince emotionally. Once one person adopts it and succeeds, others follow. I also explicitly invited skeptics to critique the demo - their buy-in is most valuable.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["ambiguity", "initiative"],
+    "question": "You're assigned a project with unclear requirements. What's your first step?",
+    "choices": ["Start building based on your best guess", "Wait for clearer requirements", "Identify key stakeholders and ask specific questions to clarify scope", "Research similar projects for guidance"],
+    "answer": "Identify key stakeholders and ask specific questions to clarify scope",
+    "explanation": "Strong answer: 'I never build on assumptions alone. First, I identify who actually owns the outcome - often not who assigned the task. Then I ask: \"What does success look like? What's the must-have vs nice-to-have? What's the deadline and why?\" I document answers and send back for confirmation. This takes 1-2 hours but saves weeks of rework. Building the wrong thing fast is still wrong.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["difficult-teammate", "collaboration"],
+    "question": "A teammate consistently misses deadlines affecting your work. How do you handle it?",
+    "choices": ["Report to manager immediately", "Cover for them to keep the project on track", "Have a direct 1:1 conversation to understand and solve", "Work around them independently"],
+    "answer": "Have a direct 1:1 conversation to understand and solve",
+    "explanation": "Strong answer: 'Direct conversation first. I'd ask privately: \"I've noticed the last 3 deliverables came in late - is something blocking you? How can I help?\" Often there's a reason: unclear requirements, personal issues, or skill gaps. If it continues after the conversation and support, then I involve the manager with specifics, not complaints. I never throw teammates under the bus publicly.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["pressure", "quality"],
+    "question": "You're 80% done with a feature when you discover a significant edge case bug. Ship on time or fix it?",
+    "choices": ["Ship on time - fix it in the next release", "Delay launch to fix the bug", "It depends on the severity and user impact of the bug", "Ship with a known issues disclaimer"],
+    "answer": "It depends on the severity and user impact of the bug",
+    "explanation": "Strong answer: 'Severity matters. If the bug affects 1% of edge cases with minor impact, I'd document it, ship, and fix next sprint. If it causes data loss or safety issues for any user, we delay - period. I communicate immediately: \"Found issue X affecting Y users. Recommend delay of Z days to fix. Here's the risk if we ship anyway.\" Decision goes up, but I make my recommendation clear.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["ownership", "accountability"],
+    "question": "A feature you shipped caused a production incident. What's your response?",
+    "choices": ["Investigate quietly to avoid attention", "Immediately alert stakeholders, fix, then do a blameless postmortem", "Point out the code review process failed", "Wait for users to report it"],
+    "answer": "Immediately alert stakeholders, fix, then do a blameless postmortem",
+    "explanation": "Strong answer: 'Own it immediately. Step 1: Alert the team and stakeholders - hiding it makes it worse. Step 2: Fix or rollback - user impact first. Step 3: Blameless postmortem - what failed, not who. At Rogers, I shipped a guardrail that was too aggressive and blocked legitimate queries. I caught it in monitoring, alerted within 10 minutes, rolled back, and led the postmortem. We improved the testing process.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["communication", "stakeholders"],
+    "question": "How do you explain a technical delay to a non-technical executive?",
+    "choices": ["Use technical terms to show the complexity", "Focus on business impact and revised timeline with clear options", "Apologize and promise to work harder", "Minimize the delay to reduce concern"],
+    "answer": "Focus on business impact and revised timeline with clear options",
+    "explanation": "Strong answer: 'Skip the technical details. I'd say: \"We found an issue that would affect user experience in scenario X. We have two options: ship next Tuesday with full fix, or ship Friday with a workaround that covers 90% of cases. My recommendation is Tuesday. Here's what we're doing differently to catch this earlier next time.\" Executives want options, impact, and solutions - not explanations of why code is hard.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["manager-reference", "self-awareness"],
+    "question": "What would your previous manager say is your biggest area for growth?",
+    "choices": ["Nothing - I'm well-rounded", "Moving faster without sacrificing quality", "An honest, specific growth area with examples of how you're working on it", "Something generic like 'communication'"],
+    "answer": "An honest, specific growth area with examples of how you're working on it",
+    "explanation": "Strong answer: 'My RBC manager would say I over-engineer early solutions. I want the architecture to be perfect before shipping. She pushed me to ship MVPs faster and iterate. I'm working on it - at WAT.ai, I shipped a basic parser in 3 days instead of building the 'ideal' system. It wasn't pretty, but we learned from real usage. Perfectionism is a disguised weakness and interviewers know it.'"
+  },
+  {
+    "category": "tesla-behavioral",
+    "tags": ["motivation", "drive"],
+    "question": "What keeps you motivated when working on a long, ambiguous project?",
+    "choices": ["External deadlines and manager check-ins", "Breaking into milestones and celebrating small wins", "Competitive pressure", "Fear of failure"],
+    "answer": "Breaking into milestones and celebrating small wins",
+    "explanation": "Strong answer: 'Big projects are marathons. I break them into 1-2 week chunks with clear deliverables. Each chunk has a mini-demo or check-in. At Adanomad, the workflow engine was 4 months - I set weekly targets (week 1: basic execution, week 2: caching, etc.) and tracked progress visibly. Seeing the pipeline latency graph improve each week was genuinely motivating. External pressure helps, but internal momentum sustains.'"
+  },
+
+  {
+    "category": "tesla-product",
+    "tags": ["adoption", "rollout"],
+    "question": "[Tesla Context] You deploy an AI diagnostic tool for technicians. After 1 month, adoption is only 20%. What's your first step?",
+    "choices": ["Mandate usage through policy", "Talk to non-adopting technicians to understand why", "Improve the AI accuracy", "Add more features"],
+    "answer": "Talk to non-adopting technicians to understand why",
+    "explanation": "Strong answer: 'Mandates create resentment, not adoption. I'd spend a day shadowing non-adopters. Common blockers: takes too long (workflow friction), doesn't trust recommendations (accuracy/transparency), already has a method that works (habit). At Rogers, we found that 30% of non-adoption was just login friction - one SSO fix boosted usage 15%. Never assume the problem; go observe.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["metrics", "success-framework"],
+    "question": "[Tesla Context] The JD mentions a three-layer success framework: Adoption, Quality, Impact. What's an example metric for each?",
+    "choices": ["All three should be NPS scores", "Adoption: DAU; Quality: decision accuracy; Impact: time saved per task", "Focus only on Impact since that's what leadership cares about", "Adoption: logins; Quality: uptime; Impact: revenue"],
+    "answer": "Adoption: DAU; Quality: decision accuracy; Impact: time saved per task",
+    "explanation": "Strong answer: 'Adoption: % of target users actively using tool weekly. Quality: accuracy rate, hallucination rate, user-reported errors. Impact: time saved per diagnosis, first-time fix rate, customer wait time. These cascade - high adoption with poor quality means users try once and leave. High quality with no adoption means the tool is good but unusable. Impact is the business outcome that justifies investment.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["human-in-loop", "trust"],
+    "question": "[Tesla Context] A technician follows an AI recommendation that turns out to be wrong, causing a repair delay. How do you handle this?",
+    "choices": ["Blame the technician for not verifying", "Improve the model to be more accurate", "Add confidence scores and human verification for uncertain recommendations", "Remove the tool until it's perfect"],
+    "answer": "Add confidence scores and human verification for uncertain recommendations",
+    "explanation": "Strong answer: 'AI should augment, not replace, technician judgment - especially early on. I'd add: (1) confidence scores so techs know when to trust vs verify, (2) required confirmation for high-stakes recommendations, (3) easy feedback mechanism to report failures. The failed case becomes training data. We also communicate openly: \"AI is a tool, not the answer. Your expertise catches what it misses.\" Build trust gradually.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["workflow", "operations"],
+    "question": "[Tesla Context] How would you redesign a technician's workflow to integrate an AI diagnostic assistant?",
+    "choices": ["Add AI as a separate tool they check after their normal process", "Embed AI suggestions directly into their existing diagnostic interface", "Replace their current process with AI-driven steps", "Let technicians choose how they want to integrate it"],
+    "answer": "Embed AI suggestions directly into their existing diagnostic interface",
+    "explanation": "Strong answer: 'Don't add steps - remove them. If techs have to context-switch to a separate AI tool, they won't. I'd embed: when they pull up a vehicle's diagnostic codes, AI suggestions appear inline with confidence levels. One screen, not two. At Rogers, embedding recommendations in the existing CRM view vs separate dashboard increased usage from 20% to 65%. Meet users where they already work.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["pilot-to-production", "scaling"],
+    "question": "[Tesla Context] Your AI tool works great in a 10-technician pilot. What could go wrong when scaling to 1000?",
+    "choices": ["Nothing - if it works for 10, it works for 1000", "Regional differences, edge cases, infrastructure limits, and training gaps", "Only technical issues like server capacity", "Only human issues like resistance to change"],
+    "answer": "Regional differences, edge cases, infrastructure limits, and training gaps",
+    "explanation": "Strong answer: 'Scale reveals edge cases. Regional differences: different vehicle models, regulations, languages. Edge cases: rare failure modes not in pilot data. Infrastructure: latency spikes under load, database bottlenecks. Training: pilot techs got hands-on intro; 1000 techs need scalable onboarding. I'd plan: regional customization, expanded test coverage, load testing, and self-serve training materials before scaling.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["when-not-ai", "judgment"],
+    "question": "[Tesla Context] When should AI NOT be used in service operations?",
+    "choices": ["AI should be used for everything to maximize efficiency", "Safety-critical decisions, legal/compliance judgments, and situations requiring empathy", "Only when the model isn't accurate enough", "When users don't want it"],
+    "answer": "Safety-critical decisions, legal/compliance judgments, and situations requiring empathy",
+    "explanation": "Strong answer: 'AI shouldn't make final calls on: safety decisions (brake systems, airbags), legal liability determinations, or emotionally sensitive customer situations (vehicle totaled, injury claims). It can support these with data and suggestions, but humans must decide. Also avoid AI when the cost of being wrong exceeds the benefit of automation - some decisions need the 'smell test' only humans have.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["self-improving", "feedback-loop"],
+    "question": "[Tesla Context] The JD mentions 'self-evolving' AI tools. What does a healthy feedback → improvement loop look like?",
+    "choices": ["Collect feedback manually and update prompts quarterly", "Automated: capture feedback → evaluate patterns → update prompts/skills → redeploy → measure impact", "Let users update the prompts themselves", "Only retrain the model when accuracy drops"],
+    "answer": "Automated: capture feedback → evaluate patterns → update prompts/skills → redeploy → measure impact",
+    "explanation": "Strong answer: 'Self-evolving means the loop runs without manual triage. Step 1: In-tool feedback capture (thumbs, corrections). Step 2: Automated clustering of failure patterns. Step 3: When a pattern exceeds threshold, trigger prompt/skill update. Step 4: A/B test the update. Step 5: If metrics improve, deploy; if not, rollback. Close the loop with users: \"Your feedback on X improved the tool.\" This is the vision in the JD.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["redundancy", "tool-sprawl"],
+    "question": "[Tesla Context] You find 3 different AI tools doing similar things across Tesla Service. What's your approach?",
+    "choices": ["Keep all 3 - different teams prefer different tools", "Immediately deprecate 2 and force migration", "Audit capabilities, consolidate gradually with user input, ensure one tool per capability", "Let users vote on which to keep"],
+    "answer": "Audit capabilities, consolidate gradually with user input, ensure one tool per capability",
+    "explanation": "Strong answer: 'Redundancy wastes resources and confuses users. Step 1: Audit what each tool does - sometimes they're not actually redundant. Step 2: Identify the 'winner' based on usage, accuracy, and maintainability. Step 3: Migrate gradually - announce timeline, support transition, don't break workflows suddenly. Step 4: Sunset losers only after migration complete. Key: involve power users from each tool in the decision.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["compliance", "security"],
+    "question": "[Tesla Context] Your AI tool processes customer vehicle data. What compliance considerations matter most?",
+    "choices": ["Data encryption", "Access control, data minimization, audit logging, and customer consent", "GDPR only", "Whatever legal team says"],
+    "answer": "Access control, data minimization, audit logging, and customer consent",
+    "explanation": "Strong answer: 'Defense in depth. Access control: only authorized roles see sensitive data, audit who accessed what. Data minimization: only collect what's needed, don't store PII unnecessarily. Audit logging: every AI decision traceable for investigation. Customer consent: clear about what data is used and how. Also: retention policies (auto-delete after X days), regional compliance (GDPR, CCPA differ). I'd partner with security and legal early, not after building.'"
+  },
+  {
+    "category": "tesla-product",
+    "tags": ["monitoring", "regression"],
+    "question": "[Tesla Context] Your AI tool accuracy was 95% last month, now it's 87%. How do you diagnose the regression?",
+    "choices": ["Retrain the model with more data", "Analyze which segments degraded, check for data drift, review recent changes", "Increase the confidence threshold", "Roll back to the previous version"],
+    "answer": "Analyze which segments degraded, check for data drift, review recent changes",
+    "explanation": "Strong answer: 'Don't guess - segment and investigate. Step 1: Which vehicle types, regions, or query types degraded? Often it's concentrated. Step 2: Did input data distribution shift? (New models, seasonal issues.) Step 3: Any recent prompt or tool changes that correlate? At RBC, we found degradation was isolated to one document type that changed format. Targeted fix was better than wholesale retraining.'"
+  },
+
+  {
+    "category": "tesla-crossfunctional",
+    "tags": ["technicians", "communication"],
+    "question": "How would you explain an AI recommendation system to a Tesla technician who's skeptical of 'robots taking over'?",
+    "choices": ["Emphasize the technical accuracy and how it's better than humans", "Frame it as a tool that makes their expertise more efficient, not a replacement", "Avoid the conversation and let adoption happen naturally", "Show them the data on how AI improves outcomes"],
+    "answer": "Frame it as a tool that makes their expertise more efficient, not a replacement",
+    "explanation": "Strong answer: 'I'd say: \"This doesn't replace your judgment - it surfaces possibilities faster. You've diagnosed thousands of vehicles; the AI learned from cases like yours. It's like having a second opinion on demand. You decide what to do - it just helps you consider options you might miss when rushed. And when it's wrong, your feedback makes it smarter.\" Respect their expertise; position AI as an amplifier.'"
+  },
+  {
+    "category": "tesla-crossfunctional",
+    "tags": ["pm", "engineering"],
+    "question": "A PM wants a feature shipped in 2 weeks that engineering estimates at 4 weeks. How do you bridge this?",
+    "choices": ["Side with engineering - they know the work", "Side with PM - business needs drive timelines", "Facilitate scope negotiation: what's the core value and what can be deferred?", "Escalate to leadership to decide"],
+    "answer": "Facilitate scope negotiation: what's the core value and what can be deferred?",
+    "explanation": "Strong answer: 'Neither side is wrong - they have different constraints. I'd ask: \"What's the must-have for the 2-week deadline? What would a 2-week MVP look like vs the 4-week full version?\" Often PMs have flexibility they haven't articulated. Engineers might realize 60% of the work is polish. My role is to surface tradeoffs: \"We can ship X in 2 weeks if we defer Y. Is that acceptable?\"'"
+  },
+  {
+    "category": "tesla-crossfunctional",
+    "tags": ["executives", "reporting"],
+    "question": "How do you present AI tool performance to executives who only have 5 minutes?",
+    "choices": ["Detailed technical metrics with methodology", "Single page: key metric, trend, one action item needed", "Let them ask questions and respond", "Send a pre-read and cancel the meeting"],
+    "answer": "Single page: key metric, trend, one action item needed",
+    "explanation": "Strong answer: 'Lead with the headline: \"Adoption up 25%, quality stable, projected $X impact this quarter.\" Then one chart showing the trend. End with ask: \"Need approval to expand to region Y\" or \"No blockers, just FYI.\" Have backup slides for deep-dive questions but don't show them unless asked. Executives want: are we on track, is there a problem, what do you need from me.'"
+  },
+  {
+    "category": "tesla-crossfunctional",
+    "tags": ["service-managers", "operations"],
+    "question": "A service center manager says your AI tool is slowing down their team. How do you respond?",
+    "choices": ["Defend the tool with data showing it's actually faster", "Shadow their team to observe the actual workflow and pain points", "Offer more training", "Remove the tool from their location"],
+    "answer": "Shadow their team to observe the actual workflow and pain points",
+    "explanation": "Strong answer: 'Data in a spreadsheet doesn't capture workflow friction. I'd ask to spend a shift observing. Maybe the tool is fast but requires too many clicks. Maybe it's accurate but interrupts their rhythm. At Rogers, managers complained about slowness - turned out the issue was loading time on older terminals, not the tool itself. Different root cause, different fix. Always observe before defending.'"
+  },
+  {
+    "category": "tesla-crossfunctional",
+    "tags": ["ml-engineers", "collaboration"],
+    "question": "You have feedback that an AI model needs improvement. How do you communicate this to the ML team effectively?",
+    "choices": ["Just say 'the model is wrong sometimes'", "Provide specific failure examples, user impact, and proposed success criteria", "Let them figure out what's wrong from the logs", "File a bug ticket with low priority"],
+    "answer": "Provide specific failure examples, user impact, and proposed success criteria",
+    "explanation": "Strong answer: 'Vague feedback is unusable. I'd compile: (1) Specific examples of failures with inputs/outputs, (2) Pattern analysis - is it a certain vehicle type, query structure?, (3) User impact - how many users affected, what's the cost?, (4) Success criteria - what accuracy level would resolve this? This lets ML engineers reproduce, prioritize, and validate their fix. Good collaboration means doing the work to make their work easier.'"
+  },
+
+  {
+    "category": "tesla-motivation",
+    "tags": ["why-tesla", "mission"],
+    "question": "Why Tesla Service specifically, rather than Tesla Autopilot or Energy?",
+    "choices": ["Service is easier to get into", "Service is where AI meets real operational workflows and human users at scale", "I applied to all of them", "Service has better compensation"],
+    "answer": "Service is where AI meets real operational workflows and human users at scale",
+    "explanation": "Strong answer: 'Autopilot is fascinating but one use case. Service is where AI intersects with thousands of technicians, advisors, and customers daily across hundreds of locations. The operational complexity - different regions, vehicle types, human factors - is exactly what I find interesting. My RBC and Rogers work was about AI in operational contexts, not research. I want to see AI change how real people work, not just publish papers.'"
+  },
+  {
+    "category": "tesla-motivation",
+    "tags": ["why-ai", "career"],
+    "question": "Why focus on AI adoption/operations instead of pure ML research?",
+    "choices": ["Research is too competitive", "Building AI that real users depend on is more impactful than models that never ship", "I'm not good enough at math for research", "Operations pays better"],
+    "answer": "Building AI that real users depend on is more impactful than models that never ship",
+    "explanation": "Strong answer: 'A 95% accurate model that nobody uses is worthless. My interest is in the full lifecycle: building AI that works in production, getting it adopted, measuring real impact, and improving from feedback. At Rogers, the ML team built the model, but I owned making it useful. That's where the hard problems are - not just \"does the model work?\" but \"do users trust it? does it fit their workflow? does it actually save time?\"'"
+  },
+  {
+    "category": "tesla-motivation",
+    "tags": ["long-term", "goals"],
+    "question": "Where do you see yourself in 5 years?",
+    "choices": ["Managing a team of engineers", "At a FAANG company making more money", "Leading AI adoption programs that bridge technical and operational teams", "Starting my own company"],
+    "answer": "Leading AI adoption programs that bridge technical and operational teams",
+    "explanation": "Strong answer: 'I want to be the person who ensures AI investments actually deliver business value. That means deep technical skills, understanding of operations, and ability to work across organizations. In 5 years, I see myself owning the AI adoption strategy for a service organization - deciding which tools to build, how to roll them out, and measuring success. Tesla Service is exactly where I'd learn this.'"
+  },
+  {
+    "category": "tesla-motivation",
+    "tags": ["tesla-culture", "fit"],
+    "question": "Tesla is known for high intensity and rapid iteration. How does your work style fit?",
+    "choices": ["I prefer structured environments with clear processes", "I thrive in ambiguity and ship fast, learning from mistakes", "I'll adapt to whatever is needed", "I need work-life balance"],
+    "answer": "I thrive in ambiguity and ship fast, learning from mistakes",
+    "explanation": "Strong answer: 'At Adanomad, we shipped the workflow engine to 200 users in 3 months - not by doing things perfectly, but by iterating fast. I pushed code daily, got user feedback weekly, and fixed issues in production. At RBC, a slower environment, I found myself itching to ship faster. I work best when the bar is \"good enough to learn from\" not \"perfect before anyone sees it.\" That said, I know when to slow down for safety-critical work.'"
+  },
+  {
+    "category": "tesla-motivation",
+    "tags": ["curiosity", "service"],
+    "question": "What's something about Tesla's service operations that you're genuinely curious to learn?",
+    "choices": ["How to work at a prestigious company", "How they handle AI tool consistency across hundreds of global locations", "What the compensation looks like", "Whether I can transfer to Autopilot later"],
+    "answer": "How they handle AI tool consistency across hundreds of global locations",
+    "explanation": "Strong answer: 'The JD mentions \"same input, same quality of output\" across regions. That's hard. Different languages, regulations, vehicle mixes, technician training levels. I'm curious: how do you maintain consistency without over-standardizing? Do regional teams have autonomy to adapt? How do you detect when one region's AI performs worse? I've dealt with this at smaller scale at Rogers (different provinces) but Tesla's global footprint is another level.'"
   }
 ]
