@@ -101,7 +101,13 @@ const elements = {
     filterBtns: document.querySelectorAll('.filter-btn'),
     finalCorrect: document.getElementById('final-correct'),
     finalIncorrect: document.getElementById('final-incorrect'),
-    restartBtn: document.getElementById('restart-btn')
+    restartBtn: document.getElementById('restart-btn'),
+    // API Key elements
+    apiKeyBtn: document.getElementById('api-key-btn'),
+    apiKeyModal: document.getElementById('api-key-modal'),
+    apiKeyInput: document.getElementById('api-key-input'),
+    saveApiKey: document.getElementById('save-api-key'),
+    cancelApiKey: document.getElementById('cancel-api-key')
 };
 
 // Utility: Shuffle array in place (Fisher-Yates)
@@ -277,6 +283,30 @@ elements.nextBtn.addEventListener('click', nextQuestion);
 elements.restartBtn.addEventListener('click', startQuiz);
 elements.filterBtns.forEach(btn => {
     btn.addEventListener('click', handleFilterClick);
+});
+
+// API Key modal handlers
+elements.apiKeyBtn.addEventListener('click', () => {
+    elements.apiKeyInput.value = state.openaiKey;
+    elements.apiKeyModal.classList.remove('hidden');
+});
+
+elements.cancelApiKey.addEventListener('click', () => {
+    elements.apiKeyModal.classList.add('hidden');
+});
+
+elements.saveApiKey.addEventListener('click', () => {
+    const key = elements.apiKeyInput.value.trim();
+    state.openaiKey = key;
+    localStorage.setItem('openai_api_key', key);
+    elements.apiKeyModal.classList.add('hidden');
+});
+
+// Close modal on backdrop click
+elements.apiKeyModal.addEventListener('click', (e) => {
+    if (e.target === elements.apiKeyModal) {
+        elements.apiKeyModal.classList.add('hidden');
+    }
 });
 
 // Initialize
