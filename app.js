@@ -107,7 +107,15 @@ const elements = {
     apiKeyModal: document.getElementById('api-key-modal'),
     apiKeyInput: document.getElementById('api-key-input'),
     saveApiKey: document.getElementById('save-api-key'),
-    cancelApiKey: document.getElementById('cancel-api-key')
+    cancelApiKey: document.getElementById('cancel-api-key'),
+    // Open-ended question elements
+    openContainer: document.getElementById('open-container'),
+    userResponse: document.getElementById('user-response'),
+    submitResponse: document.getElementById('submit-response'),
+    evaluatingIndicator: document.getElementById('evaluating-indicator'),
+    aiFeedback: document.getElementById('ai-feedback'),
+    aiFeedbackContent: document.getElementById('ai-feedback-content'),
+    nextBtnAi: document.getElementById('next-btn-ai')
 };
 
 // Utility: Shuffle array in place (Fisher-Yates)
@@ -161,6 +169,11 @@ function startQuiz() {
     nextQuestion();
 }
 
+// Check if question is open-ended (Tesla categories use AI evaluation)
+function isOpenEndedQuestion(question) {
+    return question.category && question.category.startsWith('tesla-');
+}
+
 // Display next question
 function nextQuestion() {
     if (state.queue.length === 0) {
@@ -175,18 +188,33 @@ function nextQuestion() {
     elements.categoryTag.textContent = getCategoryLabel(state.currentQuestion.category);
     elements.questionText.textContent = state.currentQuestion.question;
     elements.feedback.classList.add('hidden');
+    elements.aiFeedback.classList.add('hidden');
+    elements.userResponse.value = '';
 
-    // Shuffle and render choices
-    const shuffledChoices = shuffle([...state.currentQuestion.choices]);
-    elements.choicesContainer.innerHTML = '';
+    const isOpenEnded = isOpenEndedQuestion(state.currentQuestion);
 
-    shuffledChoices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.textContent = choice;
-        btn.addEventListener('click', () => selectAnswer(choice, btn));
-        elements.choicesContainer.appendChild(btn);
-    });
+    if (isOpenEnded) {
+        // Show open-ended container, hide multiple choice
+        elements.choicesContainer.classList.add('hidden');
+        elements.openContainer.classList.remove('hidden');
+        elements.evaluatingIndicator.classList.add('hidden');
+    } else {
+        // Show multiple choice, hide open-ended
+        elements.choicesContainer.classList.remove('hidden');
+        elements.openContainer.classList.add('hidden');
+
+        // Shuffle and render choices
+        const shuffledChoices = shuffle([...state.currentQuestion.choices]);
+        elements.choicesContainer.innerHTML = '';
+
+        shuffledChoices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = choice;
+            btn.addEventListener('click', () => selectAnswer(choice, btn));
+            elements.choicesContainer.appendChild(btn);
+        });
+    }
 
     updateStats();
 }
@@ -308,6 +336,44 @@ elements.apiKeyModal.addEventListener('click', (e) => {
         elements.apiKeyModal.classList.add('hidden');
     }
 });
+
+// Open-ended question submission
+elements.submitResponse.addEventListener('click', async () => {
+    const userAnswer = elements.userResponse.value.trim();
+    if (!userAnswer) {
+        alert('Please enter your response before submitting.');
+        return;
+    }
+
+    if (state.isEvaluating) return;
+    state.isEvaluating = true;
+
+    // Show loading state
+    elements.submitResponse.disabled = true;
+    elements.evaluatingIndicator.classList.remove('hidden');
+
+    // Call AI evaluation
+    const result = await evaluateWithAI(state.currentQuestion.question, userAnswer);
+
+    // Hide loading state
+    elements.evaluatingIndicator.classList.add('hidden');
+    elements.submitResponse.disabled = false;
+    state.isEvaluating = false;
+
+    if (result.error) {
+        elements.aiFeedbackContent.textContent = 'Error: ' + result.error;
+    } else {
+        elements.aiFeedbackContent.textContent = result.feedback;
+    }
+
+    elements.openContainer.classList.add('hidden');
+    elements.aiFeedback.classList.remove('hidden');
+    state.answered = true;
+    updateStats();
+});
+
+// Next button for AI feedback
+elements.nextBtnAi.addEventListener('click', nextQuestion);
 
 // Initialize
 loadQuestions();
