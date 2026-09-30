@@ -65,6 +65,7 @@
             <nav id="category-filters">
                 <button class="filter-btn active" data-category="all">All</button>
                 <button class="filter-btn" data-category="leetcode">LeetCode</button>
+                <button class="filter-btn" data-category="ds-concepts">DS Concepts</button>
                 <button class="filter-btn" data-category="ml">ML</button>
                 <button class="filter-btn" data-category="ml-systems">ML Systems</button>
                 <button class="filter-btn" data-category="system-design">System Design</button>
@@ -75,9 +76,27 @@
                 <button class="filter-btn" data-category="tesla-motivation">Tesla Motivation</button>
             </nav>
 
+            <!-- Topic/Subsection Picker (optional, per-category) -->
+            <button id="topic-picker-btn" class="topic-picker-btn hidden">📂 Choose Topics <span id="topic-picker-count"></span></button>
+
+            <div id="topic-picker-modal" class="modal hidden">
+                <div class="modal-content topic-picker-content">
+                    <h3>Choose Topics</h3>
+                    <p>Quiz only specific patterns within this section. Leave none checked to include everything.</p>
+                    <div id="topic-picker-list" class="topic-picker-list"></div>
+                    <div class="modal-buttons">
+                        <button id="topic-picker-clear" class="btn">Clear All</button>
+                        <button id="topic-picker-apply" class="btn btn-primary">Apply & Restart</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Question Card -->
             <main id="question-card" class="card">
-                <div id="category-tag" class="category-tag">Category</div>
+                <div class="tag-row">
+                    <div id="category-tag" class="category-tag">Category</div>
+                    <div id="topic-tag" class="topic-tag"></div>
+                </div>
                 <p id="question-text" class="question-text">Question goes here</p>
 
                 <!-- Multiple Choice Container -->
@@ -104,14 +123,31 @@
                     <div id="ai-feedback-content"></div>
                     <button id="next-btn-ai" class="btn btn-primary">Next Question</button>
                 </div>
+
+                <!-- Ask AI Section (free-text, ephemeral, works on any question) -->
+                <div id="ask-ai-section" class="ask-ai-section">
+                    <button id="ask-ai-toggle" class="ask-ai-toggle">🤖 Ask AI about this</button>
+                    <div id="ask-ai-panel" class="ask-ai-panel hidden">
+                        <div id="ai-chat-log" class="ai-chat-log"></div>
+                        <div id="ai-chat-loading" class="evaluating hidden">
+                            <span class="spinner"></span> Thinking...
+                        </div>
+                        <button id="ai-explain-btn" class="btn-ai-quick">Explain this question / pattern</button>
+                        <div class="ai-input-row">
+                            <textarea id="ai-chat-input" placeholder="Type your own answer, ask a follow-up, or ask 'when would I use X instead of Y'..." rows="2"></textarea>
+                            <button id="ai-chat-send" class="btn-ai-send">Send</button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
 
         <!-- Completion Screen -->
         <div id="completion-screen" class="screen hidden">
             <div class="card completion-card">
-                <h2>Quiz Complete!</h2>
-                <div class="final-stats">
+                <h2 id="completion-title">Quiz Complete!</h2>
+                <p id="section-progress-text" class="section-progress-text"></p>
+                <div id="final-stats-row" class="final-stats">
                     <div class="final-stat">
                         <span class="final-stat-value" id="final-correct">0</span>
                         <span class="final-stat-label">Correct</span>
@@ -121,6 +157,11 @@
                         <span class="final-stat-label">Wrong</span>
                     </div>
                 </div>
+                <button id="ai-summary-btn" class="btn-ai-quick hidden">🤖 AI Summary: what am I weak on?</button>
+                <div id="ai-summary-loading" class="evaluating hidden">
+                    <span class="spinner"></span> Analyzing your results...
+                </div>
+                <div id="ai-summary-result" class="ai-summary-result hidden"></div>
                 <button id="restart-btn" class="btn btn-primary">Start Again</button>
             </div>
         </div>
