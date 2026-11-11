@@ -195,6 +195,22 @@
                     <button id="concept-shuffle-btn" class="btn btn-concept-nav" title="Jump to a random concept">🔀</button>
                     <button id="concept-next-btn" class="btn btn-concept-nav">Next →</button>
                 </div>
+
+                <!-- Ask AI about this concept (ephemeral, works on any concept) -->
+                <div id="learn-ask-ai-section" class="ask-ai-section">
+                    <button id="learn-ask-ai-toggle" class="ask-ai-toggle">🤖 Ask AI about this</button>
+                    <div id="learn-ask-ai-panel" class="ask-ai-panel hidden">
+                        <div id="learn-ai-chat-log" class="ai-chat-log"></div>
+                        <div id="learn-ai-chat-loading" class="evaluating hidden">
+                            <span class="spinner"></span> Thinking...
+                        </div>
+                        <button id="learn-ai-deepen-btn" class="btn-ai-quick">Go deeper on this concept</button>
+                        <div class="ai-input-row">
+                            <textarea id="learn-ai-chat-input" placeholder="Ask a follow-up, request an example, or ask how this connects to something else..." rows="2"></textarea>
+                            <button id="learn-ai-chat-send" class="btn-ai-send">Send</button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>

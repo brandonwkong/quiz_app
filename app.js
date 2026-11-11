@@ -56,12 +56,19 @@ const state = {
     // Learn tab: which layer is active ('all', 'L1', 'L2', 'L3') and the index
     // into the currently filtered concept list.
     learnLayer: 'all',
-    learnIndex: 0
+    learnIndex: 0,
+    // Ask AI chat for the Learn tab: lives only in memory for the current
+    // concept, reset whenever the concept changes (same pattern as the quiz's
+    // aiChatMessages).
+    learnChatMessages: [],
+    isLearnChatting: false
 };
 
 const TUTOR_SYSTEM_PROMPT = `You are a friendly, concise CS interview tutor helping someone study data structures, algorithms, and interview patterns on their phone. Keep answers mobile-friendly: short paragraphs, bullet points where useful, no walls of text. When relevant, mention time/space complexity and WHEN to use one approach/data structure over another. If the user pastes their own attempted answer, briefly evaluate it (what's right, what's missing) rather than just giving the solution outright. Be direct and skip filler.`;
 
 const COACH_SYSTEM_PROMPT = `You are a concise study coach reviewing a practice quiz session for someone prepping for software engineering interviews (DSA + system design). You'll get a log of questions with their topic and whether the user got them right or wrong. Identify weak topics/patterns (don't just restate the log), and give focused, actionable advice on what to review next. Keep it mobile-friendly: short paragraphs and bullet points, no walls of text.`;
+
+const CONCEPT_TUTOR_PROMPT = `You are a concise, knowledgeable tutor helping a software engineering intern build range across the inference/serving stack, on their phone. They think of the stack in three layers: L1 = endpoints and backend serving (already strong here), L2 = the runtime layer (dynamic/continuous batching, scheduling, KV cache, PagedAttention, TTFT/inter-token latency/throughput, tensor parallelism, prefill/decode disaggregation, routing), L3 = kernels and the GPU (CUDA, the roofline model, memory coalescing, shared-memory tiling, occupancy, Triton, profiling), building L3 up from near zero. You'll be given one concept's title and explanation as context. Go deeper than the given paragraph: add a concrete example, a number or rule of thumb where relevant, a common misconception, or a pointer to how it shows up in real systems (vLLM, TensorRT-LLM, etc.) or the relevant paper/book. Keep answers mobile-friendly: short paragraphs, bullets where useful, no walls of text. Be direct and skip filler.`;
 
 // Tesla Interviewer System Prompt
 const INTERVIEWER_PROMPT = `You are a Senior Staff Project Manager at Tesla conducting the FINAL interview for the Service Systems Integration Engineer Internship. The candidate has already passed 2 technical rounds with a Staff Software Engineer and Staff Service Systems Integration Engineer.
@@ -180,6 +187,14 @@ function buildQuestionContext() {
     return context;
 }
 
+// Build context describing the current Learn-tab concept for the AI
+function buildConceptContext() {
+    const pool = getFilteredConcepts();
+    const concept = pool[state.learnIndex];
+    if (!concept) return '';
+    return `Concept (layer ${concept.layer}): ${concept.title}\n\n${concept.text}`;
+}
+
 // DOM Elements
 const elements = {
     loadingScreen: document.getElementById('loading-screen'),
@@ -249,7 +264,15 @@ const elements = {
     conceptText: document.getElementById('concept-text'),
     conceptPrevBtn: document.getElementById('concept-prev-btn'),
     conceptNextBtn: document.getElementById('concept-next-btn'),
-    conceptShuffleBtn: document.getElementById('concept-shuffle-btn')
+    conceptShuffleBtn: document.getElementById('concept-shuffle-btn'),
+    // Learn tab: Ask AI panel elements
+    learnAskAiToggle: document.getElementById('learn-ask-ai-toggle'),
+    learnAskAiPanel: document.getElementById('learn-ask-ai-panel'),
+    learnAiChatLog: document.getElementById('learn-ai-chat-log'),
+    learnAiChatLoading: document.getElementById('learn-ai-chat-loading'),
+    learnAiDeepenBtn: document.getElementById('learn-ai-deepen-btn'),
+    learnAiChatInput: document.getElementById('learn-ai-chat-input'),
+    learnAiChatSend: document.getElementById('learn-ai-chat-send')
 };
 
 // Utility: Shuffle array in place (Fisher-Yates)
@@ -661,19 +684,19 @@ elements.nextBtnAi.addEventListener('click', nextQuestion);
 
 // ---------- Ask AI panel (ephemeral chat, no persistence) ----------
 
-function appendChatBubble(role, text) {
+function appendChatBubble(logEl, role, text) {
     const bubble = document.createElement('div');
     bubble.className = `ai-bubble ai-bubble-${role}`;
     bubble.textContent = text;
-    elements.aiChatLog.appendChild(bubble);
-    elements.aiChatLog.scrollTop = elements.aiChatLog.scrollHeight;
+    logEl.appendChild(bubble);
+    logEl.scrollTop = logEl.scrollHeight;
 }
 
 async function sendChatMessage(userText) {
     if (!userText || state.isChatting) return;
     state.isChatting = true;
 
-    appendChatBubble('user', userText);
+    appendChatBubble(elements.aiChatLog, 'user', userText);
 
     // Seed with the tutor system prompt + question context on the first message
     if (state.aiChatMessages.length === 0) {
@@ -695,10 +718,10 @@ async function sendChatMessage(userText) {
     state.isChatting = false;
 
     if (result.error) {
-        appendChatBubble('assistant', 'Error: ' + result.error);
+        appendChatBubble(elements.aiChatLog, 'assistant', 'Error: ' + result.error);
         state.aiChatMessages.pop(); // don't keep a failed turn in context
     } else {
-        appendChatBubble('assistant', result.reply);
+        appendChatBubble(elements.aiChatLog, 'assistant', result.reply);
         state.aiChatMessages.push({ role: 'assistant', content: result.reply });
     }
 }
@@ -746,6 +769,12 @@ function renderConcept() {
     elements.conceptProgress.textContent = `${state.learnIndex + 1} / ${pool.length}`;
     elements.conceptTitle.textContent = concept.title;
     elements.conceptText.textContent = concept.text;
+
+    // Reset the ephemeral Ask AI chat for the new concept (no persistence)
+    state.learnChatMessages = [];
+    elements.learnAiChatLog.innerHTML = '';
+    elements.learnAskAiPanel.classList.add('hidden');
+    elements.learnAiChatInput.value = '';
 }
 
 function goToMode(mode) {
@@ -795,6 +824,64 @@ elements.conceptShuffleBtn.addEventListener('click', () => {
     } while (next === state.learnIndex);
     state.learnIndex = next;
     renderConcept();
+});
+
+// ---------- Learn tab: Ask AI panel (ephemeral chat, no persistence) ----------
+
+async function sendLearnChatMessage(userText) {
+    if (!userText || state.isLearnChatting) return;
+    state.isLearnChatting = true;
+
+    appendChatBubble(elements.learnAiChatLog, 'user', userText);
+
+    // Seed with the concept tutor system prompt + concept context on the first message
+    if (state.learnChatMessages.length === 0) {
+        state.learnChatMessages.push({ role: 'system', content: CONCEPT_TUTOR_PROMPT });
+        state.learnChatMessages.push({ role: 'user', content: buildConceptContext() });
+        state.learnChatMessages.push({ role: 'assistant', content: 'Got it, I have the concept. What would you like to know?' });
+    }
+    state.learnChatMessages.push({ role: 'user', content: userText });
+
+    elements.learnAiChatSend.disabled = true;
+    elements.learnAiDeepenBtn.disabled = true;
+    elements.learnAiChatLoading.classList.remove('hidden');
+
+    const result = await chatWithAI(state.learnChatMessages);
+
+    elements.learnAiChatLoading.classList.add('hidden');
+    elements.learnAiChatSend.disabled = false;
+    elements.learnAiDeepenBtn.disabled = false;
+    state.isLearnChatting = false;
+
+    if (result.error) {
+        appendChatBubble(elements.learnAiChatLog, 'assistant', 'Error: ' + result.error);
+        state.learnChatMessages.pop(); // don't keep a failed turn in context
+    } else {
+        appendChatBubble(elements.learnAiChatLog, 'assistant', result.reply);
+        state.learnChatMessages.push({ role: 'assistant', content: result.reply });
+    }
+}
+
+elements.learnAskAiToggle.addEventListener('click', () => {
+    elements.learnAskAiPanel.classList.toggle('hidden');
+});
+
+elements.learnAiDeepenBtn.addEventListener('click', () => {
+    sendLearnChatMessage('Go deeper on this concept: give a concrete example, a number/rule of thumb if relevant, and a common misconception people have about it.');
+});
+
+elements.learnAiChatSend.addEventListener('click', () => {
+    const text = elements.learnAiChatInput.value.trim();
+    if (!text) return;
+    elements.learnAiChatInput.value = '';
+    sendLearnChatMessage(text);
+});
+
+elements.learnAiChatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        elements.learnAiChatSend.click();
+    }
 });
 
 // Initialize
