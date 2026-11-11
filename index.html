@@ -13,6 +13,12 @@
 </head>
 <body>
     <div id="app">
+        <!-- Mode Switch: Quiz vs Learn -->
+        <nav id="mode-switch">
+            <button id="mode-quiz-btn" class="mode-btn active" data-mode="quiz">📝 Quiz</button>
+            <button id="mode-learn-btn" class="mode-btn" data-mode="learn">🧠 Learn</button>
+        </nav>
+
         <!-- Error Screen -->
         <div id="error-screen" class="screen hidden">
             <div class="card">
@@ -165,8 +171,35 @@
                 <button id="restart-btn" class="btn btn-primary">Start Again</button>
             </div>
         </div>
+
+        <!-- Learn Screen -->
+        <div id="learn-screen" class="screen hidden">
+            <!-- Layer Filters -->
+            <nav id="layer-filters">
+                <button class="layer-filter-btn active" data-layer="all">All</button>
+                <button class="layer-filter-btn" data-layer="L1">L1 · Endpoints</button>
+                <button class="layer-filter-btn" data-layer="L2">L2 · Runtime</button>
+                <button class="layer-filter-btn" data-layer="L3">L3 · Kernels/GPU</button>
+            </nav>
+
+            <main id="concept-card" class="card">
+                <div class="tag-row">
+                    <div id="concept-layer-tag" class="category-tag">L1</div>
+                    <div id="concept-progress" class="topic-tag"></div>
+                </div>
+                <h2 id="concept-title" class="concept-title">Concept title</h2>
+                <p id="concept-text" class="concept-text">Concept paragraph goes here.</p>
+
+                <div class="concept-nav">
+                    <button id="concept-prev-btn" class="btn btn-concept-nav">← Prev</button>
+                    <button id="concept-shuffle-btn" class="btn btn-concept-nav" title="Jump to a random concept">🔀</button>
+                    <button id="concept-next-btn" class="btn btn-concept-nav">Next →</button>
+                </div>
+            </main>
+        </div>
     </div>
 
+    <script src="concepts.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

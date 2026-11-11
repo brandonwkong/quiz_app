@@ -48,7 +48,15 @@ const state = {
     selectedTopics: [],
     // This run's answer log, used only to build the end-of-section AI summary.
     // Never persisted - cleared every time a new section run starts.
-    sessionLog: []
+    sessionLog: [],
+    // Top-level mode: 'quiz' or 'learn'. Whether questions.json has finished
+    // loading, so the mode switch knows whether to show quiz-screen or loading-screen.
+    mode: 'quiz',
+    questionsLoaded: false,
+    // Learn tab: which layer is active ('all', 'L1', 'L2', 'L3') and the index
+    // into the currently filtered concept list.
+    learnLayer: 'all',
+    learnIndex: 0
 };
 
 const TUTOR_SYSTEM_PROMPT = `You are a friendly, concise CS interview tutor helping someone study data structures, algorithms, and interview patterns on their phone. Keep answers mobile-friendly: short paragraphs, bullet points where useful, no walls of text. When relevant, mention time/space complexity and WHEN to use one approach/data structure over another. If the user pastes their own attempted answer, briefly evaluate it (what's right, what's missing) rather than just giving the solution outright. Be direct and skip filler.`;
@@ -229,7 +237,19 @@ const elements = {
     aiChatLoading: document.getElementById('ai-chat-loading'),
     aiExplainBtn: document.getElementById('ai-explain-btn'),
     aiChatInput: document.getElementById('ai-chat-input'),
-    aiChatSend: document.getElementById('ai-chat-send')
+    aiChatSend: document.getElementById('ai-chat-send'),
+    // Mode switch + Learn tab elements
+    modeQuizBtn: document.getElementById('mode-quiz-btn'),
+    modeLearnBtn: document.getElementById('mode-learn-btn'),
+    learnScreen: document.getElementById('learn-screen'),
+    layerFilterBtns: document.querySelectorAll('.layer-filter-btn'),
+    conceptLayerTag: document.getElementById('concept-layer-tag'),
+    conceptProgress: document.getElementById('concept-progress'),
+    conceptTitle: document.getElementById('concept-title'),
+    conceptText: document.getElementById('concept-text'),
+    conceptPrevBtn: document.getElementById('concept-prev-btn'),
+    conceptNextBtn: document.getElementById('concept-next-btn'),
+    conceptShuffleBtn: document.getElementById('concept-shuffle-btn')
 };
 
 // Utility: Shuffle array in place (Fisher-Yates)
@@ -243,7 +263,7 @@ function shuffle(array) {
 
 // Show a specific screen, hide others
 function showScreen(screenId) {
-    [elements.loadingScreen, elements.errorScreen, elements.quizScreen, elements.completionScreen]
+    [elements.loadingScreen, elements.errorScreen, elements.quizScreen, elements.completionScreen, elements.learnScreen]
         .forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
 }
@@ -255,6 +275,7 @@ async function loadQuestions() {
         const response = await fetch('questions.json');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         state.allQuestions = await response.json();
+        state.questionsLoaded = true;
         startQuiz();
     } catch (error) {
         elements.errorMessage.textContent = `Could not load questions: ${error.message}`;
@@ -702,6 +723,78 @@ elements.aiChatInput.addEventListener('keydown', (e) => {
         e.preventDefault();
         elements.aiChatSend.click();
     }
+});
+
+// ---------- Learn tab (concept cards, cycle-through) ----------
+
+// Human-readable label shown above the layer filter count, e.g. "3 / 23"
+function getFilteredConcepts() {
+    if (state.learnLayer === 'all') return CONCEPTS;
+    return CONCEPTS.filter(c => c.layer === state.learnLayer);
+}
+
+function renderConcept() {
+    const pool = getFilteredConcepts();
+    if (pool.length === 0) return;
+
+    // Clamp in case the filter changed and shrank the pool
+    if (state.learnIndex >= pool.length) state.learnIndex = 0;
+    if (state.learnIndex < 0) state.learnIndex = pool.length - 1;
+
+    const concept = pool[state.learnIndex];
+    elements.conceptLayerTag.textContent = concept.layer;
+    elements.conceptProgress.textContent = `${state.learnIndex + 1} / ${pool.length}`;
+    elements.conceptTitle.textContent = concept.title;
+    elements.conceptText.textContent = concept.text;
+}
+
+function goToMode(mode) {
+    state.mode = mode;
+    elements.modeQuizBtn.classList.toggle('active', mode === 'quiz');
+    elements.modeLearnBtn.classList.toggle('active', mode === 'learn');
+
+    if (mode === 'learn') {
+        renderConcept();
+        showScreen('learn-screen');
+    } else {
+        showScreen(state.questionsLoaded ? 'quiz-screen' : 'loading-screen');
+    }
+}
+
+elements.modeQuizBtn.addEventListener('click', () => goToMode('quiz'));
+elements.modeLearnBtn.addEventListener('click', () => goToMode('learn'));
+
+elements.layerFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        elements.layerFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.learnLayer = btn.dataset.layer;
+        state.learnIndex = 0;
+        renderConcept();
+    });
+});
+
+elements.conceptNextBtn.addEventListener('click', () => {
+    const pool = getFilteredConcepts();
+    state.learnIndex = (state.learnIndex + 1) % pool.length;
+    renderConcept();
+});
+
+elements.conceptPrevBtn.addEventListener('click', () => {
+    const pool = getFilteredConcepts();
+    state.learnIndex = (state.learnIndex - 1 + pool.length) % pool.length;
+    renderConcept();
+});
+
+elements.conceptShuffleBtn.addEventListener('click', () => {
+    const pool = getFilteredConcepts();
+    if (pool.length <= 1) return;
+    let next;
+    do {
+        next = Math.floor(Math.random() * pool.length);
+    } while (next === state.learnIndex);
+    state.learnIndex = next;
+    renderConcept();
 });
 
 // Initialize
